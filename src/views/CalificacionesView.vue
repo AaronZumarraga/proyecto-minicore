@@ -9,6 +9,8 @@
           {{ alumno.Nombre }}
         </option>
       </select>
+
+      <button type="button" @click="buscar">Buscar</button>
     </form>
 
     <table>
@@ -23,7 +25,7 @@
       <tbody>
         <tr v-if="alumnoSeleccionado">
           <td>{{ alumnoSeleccionado.Nombre }}</td>
-          <td>{{ alumnoSeleccionado.progreso1 }}</td>
+          <td>{{ calcularPromedio(alumnoSeleccionado.notas) }}</td>
           <td>{{ alumnoSeleccionado.progreso2 }}</td>
           <td>{{ alumnoSeleccionado.progreso3 }}</td>
         </tr>
@@ -52,6 +54,18 @@ export default {
           this.listaAlumnos = data;
         })
         .catch(error => console.error('Error al obtener la lista de alumnos:', error));
+    },
+    buscar() {
+      // Encontrar el alumno seleccionado por su Id_estudiante
+      this.alumnoSeleccionado = this.listaAlumnos.find(alumno => alumno.Id_estudiante === this.filtroAlumno);
+    },
+    calcularPromedio(notas) {
+      if (notas && notas.length > 0) {
+        const sumaNotas = notas.reduce((total, nota) => total + nota, 0);
+        return (sumaNotas / notas.length).toFixed(2);
+      } else {
+        return 'N/A';
+      }
     },
   },
 };
