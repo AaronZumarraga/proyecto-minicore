@@ -5,8 +5,8 @@
     <form>
       <label for="filtroAlumno">Filtro Alumno:</label>
       <select v-model="filtroAlumno" id="filtroAlumno" name="filtroAlumno">
-        <option v-for="alumno in alumnos" :key="alumno.id" :value="alumno.id">
-          {{ alumno.nombre }}
+        <option v-for="alumno in listaAlumnos" :key="alumno.Id_estudiante" :value="alumno.Id_estudiante">
+          {{ alumno.Nombre }}
         </option>
       </select>
 
@@ -29,11 +29,11 @@
         </tr>
       </thead>
       <tbody>
-        <tr v-for="alumno in alumnos" :key="alumno.id">
-          <td>{{ alumno.nombre }}</td>
-          <td>{{ alumno.progreso1 }}</td>
-          <td>{{ alumno.progreso2 }}</td>
-          <td>{{ alumno.progreso3 }}</td>
+        <tr v-if="alumnoSeleccionado">
+          <td>{{ alumnoSeleccionado.Nombre }}</td>
+          <td>{{ alumnoSeleccionado.progreso1 }}</td>
+          <td>{{ alumnoSeleccionado.progreso2 }}</td>
+          <td>{{ alumnoSeleccionado.progreso3 }}</td>
         </tr>
       </tbody>
     </table>
@@ -47,19 +47,24 @@ export default {
       filtroAlumno: null,
       fechaInicio: null,
       fechaFin: null,
-      alumnos: [
-        { id: 1, nombre: 'Nombre del Alumno 1', progreso1: 'Nota Progreso 1', progreso2: 'Nota Progreso 2', progreso3: 'Nota Progreso 3' },
-        { id: 2, nombre: 'Nombre del Alumno 2', progreso1: 'Nota Progreso 1', progreso2: 'Nota Progreso 2', progreso3: 'Nota Progreso 3' }
-        // Agrega más alumnos según sea necesario
-      ]
+      listaAlumnos: [], // Nueva propiedad para almacenar la lista de alumnos
+      alumnoSeleccionado: null, // Nueva propiedad para almacenar el alumno seleccionado
     };
   },
+  mounted() {
+    this.obtenerListaAlumnos(); // Llama a la función al cargar el componente
+  },
   methods: {
-    buscar() {
-      // Aquí puedes agregar lógica de búsqueda según los filtros seleccionados
-      alert('Búsqueda realizada'); // Puedes reemplazar esto con la lógica real
-    }
-  }
+    obtenerListaAlumnos() {
+      fetch('http://localhost:3000/alumnos') // Reemplaza la URL con la correcta
+        .then(response => response.json())
+        .then(data => {
+          this.listaAlumnos = data;
+        })
+        .catch(error => console.error('Error al obtener la lista de alumnos:', error));
+    },
+    
+  },
 };
 </script>
 

@@ -25,3 +25,18 @@ connection.connect((err) => {
     }
     console.log('Conexión a la base de datos exitosa');
 });
+
+app.get('/alumnos', (req, res) => {
+    connection.query('SELECT * FROM alumnos', (error, results) => {
+        if (error) {
+            console.error('Error al obtener la lista de alumnos:', error);
+            res.status(500).json({ error: 'Error al obtener la lista de alumnos' });
+        } else {
+            res.json(results);
+        }
+    });
+});
+
+app.listen(port, () => {
+    console.log(`Servidor escuchando en el puerto ${port}`);
+});
