@@ -39,12 +39,17 @@ app.get('/alumnos', (req, res) => {
 
 app.get('/notas/progreso1/:idEstudiante', (req, res) => {
     const idEstudiante = req.params.idEstudiante;
+<<<<<<< HEAD
     const fechaInicio = req.query.fechaInicio || '1970-01-01';
     const fechaFin = req.query.fechaFin || '9999-12-31';
 
     connection.query(
         'SELECT Nota FROM notas WHERE Id_estudiante = ? AND Fecha BETWEEN ? AND ? AND Id_nota IN (SELECT Id_nota FROM progreso1 WHERE Id_estudiante = ?)',
         [idEstudiante, fechaInicio, fechaFin, idEstudiante],
+=======
+    connection.query('SELECT Nota FROM notas WHERE Id_estudiante = ? AND Id_nota IN (SELECT Id_nota FROM progreso1 WHERE Id_estudiante = ?)',
+        [idEstudiante, idEstudiante],
+>>>>>>> cc620838e54ebdfee064cc0ab7ec73cf1cf08801
         (error, results) => {
             if (error) {
                 console.error('Error al obtener las notas del primer progreso:', error);
@@ -56,7 +61,10 @@ app.get('/notas/progreso1/:idEstudiante', (req, res) => {
     );
 });
 
+<<<<<<< HEAD
 
+=======
+>>>>>>> cc620838e54ebdfee064cc0ab7ec73cf1cf08801
 app.listen(port, () => {
     console.log(`Servidor escuchando en el puerto ${port}`);
 });
