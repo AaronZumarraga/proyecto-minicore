@@ -25,7 +25,7 @@
       <tbody>
         <tr v-if="alumnoSeleccionado">
           <td>{{ alumnoSeleccionado.Nombre }}</td>
-          <td>{{ calcularPromedio(alumnoSeleccionado.notas) }}</td>
+          <td>{{ promedioProgreso1 }}</td>
           <td>{{ alumnoSeleccionado.progreso2 }}</td>
           <td>{{ alumnoSeleccionado.progreso3 }}</td>
         </tr>
@@ -41,6 +41,7 @@ export default {
       filtroAlumno: null,
       listaAlumnos: [],
       alumnoSeleccionado: null,
+      promedioProgreso1: 'N/A', // Inicializar con 'N/A'
     };
   },
   mounted() {
@@ -58,14 +59,24 @@ export default {
     buscar() {
       // Encontrar el alumno seleccionado por su Id_estudiante
       this.alumnoSeleccionado = this.listaAlumnos.find(alumno => alumno.Id_estudiante === this.filtroAlumno);
+      this.calcularPromedioProgreso1(this.alumnoSeleccionado.Id_estudiante);
     },
-    calcularPromedio(notas) {
-      if (notas && notas.length > 0) {
-        const sumaNotas = notas.reduce((total, nota) => total + nota, 0);
-        return (sumaNotas / notas.length).toFixed(2);
-      } else {
-        return 'N/A';
-      }
+    calcularPromedioProgreso1(idEstudiante) {
+      // Hacer una nueva solicitud al servidor para obtener las notas del primer progreso
+      fetch(`http://localhost:3000/notas/progreso1/${idEstudiante}`)
+        .then(response => response.json())
+        .then(notas => {
+          if (notas && notas.length > 0) {
+            const sumaNotas = notas.reduce((total, nota) => total + nota.Nota, 0);
+            this.promedioProgreso1 = (sumaNotas / notas.length).toFixed(2);
+          } else {
+            this.promedioProgreso1 = 'N/A';
+          }
+        })
+        .catch(error => {
+          console.error('Error al obtener las notas del primer progreso:', error);
+          this.promedioProgreso1 = 'N/A';
+        });
     },
   },
 };
