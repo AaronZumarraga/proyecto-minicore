@@ -62,16 +62,11 @@ export default {
       this.calcularPromedioProgreso1(this.alumnoSeleccionado.Id_estudiante);
     },
     calcularPromedioProgreso1(idEstudiante) {
-<<<<<<< HEAD
       const fechaInicio = '2023-10-05';
       const fechaFin = '2023-11-25';
 
       // Hacer una nueva solicitud al servidor para obtener las notas del primer progreso
       fetch(`http://localhost:3000/notas/progreso1/${idEstudiante}?fechaInicio=${fechaInicio}&fechaFin=${fechaFin}`)
-=======
-      // Hacer una nueva solicitud al servidor para obtener las notas del primer progreso
-      fetch(`http://localhost:3000/notas/progreso1/${idEstudiante}`)
->>>>>>> cc620838e54ebdfee064cc0ab7ec73cf1cf08801
         .then(response => response.json())
         .then(notas => {
           if (notas && notas.length > 0) {
